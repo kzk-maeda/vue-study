@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My First Vue</title>
+    <script src="https://unpkg.com/vue@2.5.17"></script>
+</head>
+<body>
+
+    <div id="app">
+        <button v-bind:title="loggedInButton" v-bind:disabled="!canBuy">購入</button>
+        <div :style="errorStyle">
+            <p>合計金額(税抜)： {{totalPrice | numberWithDelimiter}} </p>
+            <p>合計金額(税込)： {{totalPriceWithTax | numberWithDelimiter}} </p>
+            <p v-show="!canBuy">{{1000 | numberWithDelimiter}}円以上から購入可能です</p>
+        </div>
+    </div>
+
+    <script>
+        var items = [
+            {
+                name: 'Pencil',
+                price: 300,
+                quantity: 1
+            },
+            {
+                name: 'Note',
+                price: 400,
+                quantity: 0
+            },
+            {
+                name: 'Eraiser',
+                price: 200,
+                quantity: 0
+            },
+            {
+                name: 'Memo',
+                price: 300,
+                quantity: 0
+            }
+        ]
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                loggedInButton: "ログイン済みのため購入できます",
+                // canBuy: true,
+                items: items
+            },
+            filters: {
+                numberWithDelimiter: function(value) {
+                    if (!value) {
+                        return '0'
+                    }
+                    return value.toString().replace(/(\d)(?=(\d{3})+$)/g,'$1,')
+                }
+            },
+            computed: {
+                totalPrice: function(){
+                    return this.items.reduce(
+                        function(sum, item) {
+                            return sum + (item.price * item.quantity)
+                        }, 0
+                    )
+                },
+                totalPriceWithTax: function() {
+                    return Math.floor(this.totalPrice * 1.08)
+                },
+                canBuy: function() {
+                    return this.totalPrice >= 1000
+                },
+                errorStyle: function() {
+                    return {
+                        border: this.canBuy ? '' : '1px solid red',
+                        color: this.canBuy ? '' : 'red'
+                    }
+                }
+            },
+        })
+        window.vm = vm
+    </script>
+</body>
+</html>
