@@ -12,12 +12,17 @@
         <p>商品リスト</p>
         <ul>
             <li v-for="item in items" v-bind:key="item.name">
-                {{ item.name }} : {{ item.price }}円 × {{ item.quantity }}個 = {{ item.price * item.quantity }}円
+                <!-- {{ item.name }} : {{ item.price }}円 × {{ item.quantity }}個 = {{ item.price * item.quantity }}円 -->
+                {{item.name}}の個数：<input type="number" v-on:input="item.quantity = $event.target.value" v-bind:value="item.quantity" min="0">
             </li>
         </ul>
         <hr>
         <button v-bind:title="loggedInButton" v-bind:disabled="!canBuy">購入</button>
+        <br>
         <div :style="errorStyle">
+            <li v-for="item in items" v-bind:key="item.name">
+                {{ item.name }} : {{ item.price }}円 × {{ item.quantity }}個 = {{ item.price * item.quantity }}円
+            </li>
             <p>合計金額(税抜)： {{totalPrice | numberWithDelimiter}} </p>
             <p>合計金額(税込)： {{totalPriceWithTax | numberWithDelimiter}} </p>
             <p v-show="!canBuy">{{1000 | numberWithDelimiter}}円以上から購入可能です</p>
@@ -27,21 +32,25 @@
     <script>
         var items = [
             {
+                id: 1,
                 name: 'Pencil',
                 price: 300,
                 quantity: 1
             },
             {
+                id: 2,
                 name: 'Note',
                 price: 400,
                 quantity: 0
             },
             {
+                id: 3,
                 name: 'Eraiser',
                 price: 200,
                 quantity: 0
             },
             {
+                id: 4,
                 name: 'Memo',
                 price: 300,
                 quantity: 0
