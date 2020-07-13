@@ -13,11 +13,12 @@
         <ul>
             <li v-for="item in items" v-bind:key="item.name">
                 <!-- {{ item.name }} : {{ item.price }}円 × {{ item.quantity }}個 = {{ item.price * item.quantity }}円 -->
-                {{item.name}}の個数：<input type="number" v-on:input="item.quantity = $event.target.value" v-bind:value="item.quantity" min="0">
+                <!-- {{item.name}}の個数：<input type="number" v-on:input="item.quantity = $event.target.value" v-bind:value="item.quantity" min="0"> -->
+                {{item.name}}の個数：<input type="number" v-model="item.quantity" min="0">
             </li>
         </ul>
         <hr>
-        <button v-bind:title="loggedInButton" v-bind:disabled="!canBuy">購入</button>
+        <button v-bind:title="loggedInButton" v-bind:disabled="!canBuy" @click="doBuy">購入</button>
         <br>
         <div :style="errorStyle">
             <li v-for="item in items" v-bind:key="item.name">
@@ -71,6 +72,14 @@
                     return value.toString().replace(/(\d)(?=(\d{3})+$)/g,'$1,')
                 }
             },
+            methods: {
+                doBuy: function() {
+                    alert(this.totalPriceWithTax + '円のお買い上げ')
+                    this.items.forEach(function(item) {
+                        item.quantity = 0
+                    })
+                }
+            },
             computed: {
                 totalPrice: function(){
                     return this.items.reduce(
@@ -91,6 +100,11 @@
                         color: this.canBuy ? '' : 'red'
                     }
                 }
+            },
+            created: 
+                function () {
+                    console.log('Vue Instance is Created.')
+                
             },
         })
         window.vm = vm
