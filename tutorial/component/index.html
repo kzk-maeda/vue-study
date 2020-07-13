@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Component</title>
+    <script src="https://unpkg.com/vue@2.5.17"></script>
+</head>
+<body>
+    <div id="fruits-list">
+        <fruits-list-title></fruits-list-title>
+        <fruits-list-discription></fruits-list-discription>
+        <fruits-list-table></fruits-list-table>
+    </div>
+    <fruits-list-table></fruits-list-table>
+    
+    <script>
+        // Grobal Component
+        Vue.component('fruits-list-title', {
+            template: '<h1>フルーツ一覧</h1>'
+        })
+        
+        new Vue({
+            el: '#fruits-list',
+            // Local Component
+            components: {
+                'fruits-list-discription': {
+                    template: '<p>季節の代表的なフルーツの一覧です</p>'
+                },
+                'fruits-list-table': {
+                    template: `
+                        <table>
+                            <tr>
+                                <th>季節</th>
+                                <th>フルーツ</th>
+                            </tr>
+                            <tr>
+                                <th>春</th>
+                                <th>イチゴ</th>
+                            </tr>
+                            <tr>
+                                <th>夏</th>
+                                <th>スイカ</th>
+                            </tr>
+                            <tr>
+                                <th>秋</th>
+                                <th>カキ</th>
+                            </tr>
+                            <tr>
+                                <th>冬</th>
+                                <th>みかん</th>
+                            </tr>
+                        </table>
+                    `
+                }
+            }
+        })
+    </script>
+</body>
+</html>
