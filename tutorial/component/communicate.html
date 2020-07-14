@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communicate between parent and child component</title>
+    <script src="https://unpkg.com/vue@2.5.17"></script>
+</head>
+<body>
+    <div id="fruits-component">
+        <counter-button
+            v-for="fruit in fruitsItems"
+            :key="fruit.name"
+            :fruits-item="fruit"
+            v-on:increment="incrementCartStatus()">
+        </counter-button>
+        <p>total: {{total}}</p>
+    </div>
+
+    <script>
+        // Child Component
+        var child = Vue.component('counter-button', {
+            props: {
+                fruitsItem: {
+                    type: Object,
+                    required: true
+                }
+            },
+            template: `
+                <span>
+                    {{ fruitsItem.name }}
+                    {{ counter }}個
+                    <button v-on:click="addToCart">追加</button>
+                </span>
+            `,
+            data: function() {
+                return {
+                    counter: 0
+                }
+            },
+            methods: {
+                addToCart: function() {
+                    this.counter += 1
+                    this.$emit('increment')
+                }
+            },
+        })
+
+        // Parent Component
+        new Vue({
+            el: "#fruits-component",
+            componens: {
+                "counter-button": child
+            },
+            data: {
+                total: 0,
+                fruitsItems: [
+                    {name: 'Apple'},
+                    {name: 'Orange'},
+                    {name: 'Banana'}
+                ]
+            },
+            methods: {
+                incrementCartStatus: function() {
+                    this.total += 1
+                }
+            }
+        })
+
+    </script>
+</body>
+</html>
