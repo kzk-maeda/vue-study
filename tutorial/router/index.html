@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@2.5.17"></script>
+    <script src="https://unpkg.com/vue-router@3.0.1"></script>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/top">Top Page</router-link>
+        <router-link to="/users">User List Page</router-link>
+        <router-view></router-view>
+    </div>
+
+    <!-- Router -->
+    <script>
+        const router = new VueRouter({
+            routes: [
+                {
+                    path: '/top',
+                    component: {
+                        template: '<div>Top Page. </div>'
+                    }
+                },
+                {
+                    path: '/users',
+                    component: {
+                        template: '<div>User List Page. </div>'
+                    }
+                }
+            ]
+        })
+
+        var app = new Vue({
+            router: router
+        }).$mount('#app')
+    </script>
+</body>
+</html>
